@@ -63,7 +63,7 @@ export default async function MyAsks() {
                     (to keep you logged in), or choose to post a response to an ask.
                 </p>
                 <p className="text-gray-400 mx-5 max-w-prose">
-                    Made by <a href="https://bsky.app/profile/zyntaks.ca" className="font-medium hover:underline underline-offset-8">@zyntaks.ca</a>
+                    Made by <a href="https://bsky.app/profile/zyntaks.ca" className="font-medium hover:underline underline-offset-8">@zyntaks.ca</a>. <a href="https://github.com/furrz/BlueAsk">Open Source.</a>
                 </p>
             </>
         )
@@ -100,7 +100,10 @@ export default async function MyAsks() {
                     <input type="submit" value="Post" className="cursor-pointer py-2 px-5 bg-blue-950 h-12 rounded-br font-medium text-blue-400"/>
                 </form>
             </div>))}
-            <Link href="/logout" className="text-gray-500 mx-5 underline underline-offset-4">Log Out</Link>
+            <Link href="/logout" className="text-gray-400 mx-5 underline underline-offset-4">Log Out</Link>
+            <p className="text-gray-400 mx-5 max-w-prose">
+                Made by <a href="https://bsky.app/profile/zyntaks.ca" className="font-medium hover:underline underline-offset-8">@zyntaks.ca</a>. <a href="https://github.com/furrz/BlueAsk">Open Source.</a>
+            </p>
         </>
     )
 }

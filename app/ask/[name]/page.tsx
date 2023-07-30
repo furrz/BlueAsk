@@ -44,6 +44,9 @@ export default async function AskUser({ params }: { params: { name: string }}) {
                 <textarea name="message" placeholder="Your Message" maxLength={500} className="bg-gray-800 rounded px-5 py-3"></textarea>
                 <input type="submit" value="Ask!" className="bg-blue-700 py-3 px-5 rounded cursor-pointer"/>
             </form>
+            <p className="text-gray-400 mx-5 max-w-prose">
+                Made by <a href="https://bsky.app/profile/zyntaks.ca" className="font-medium hover:underline underline-offset-8">@zyntaks.ca</a>. <a href="https://github.com/furrz/BlueAsk">Open Source.</a>
+            </p>
         </>
     )
 }

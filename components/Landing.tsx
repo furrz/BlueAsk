@@ -8,7 +8,7 @@ export default function Landing() {
         'use server';
 
         if (!data.has('username') || !data.has('password'))
-            return { error: "Must provide a username and password!" }
+            throw new Error('Missing Username or Password');
 
         const agent = await createUnvalidatedAgentInstance();
 

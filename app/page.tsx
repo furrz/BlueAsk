@@ -10,7 +10,6 @@ import {AtpSessionData} from "@atproto/api";
 export default async function MyAsks() {
     async function logOut() {
         'use server';
-        console.log("Logged out");
         cookies().set('ask-session', '', {maxAge: 0});
     }
 

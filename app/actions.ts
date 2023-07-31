@@ -22,10 +22,10 @@ export async function deleteAsk(formData: FormData) {
 
 export async function answerAsk(formData: FormData) {
     const agent = await getAgent();
-    if (!agent) return { error: 'Not Authorized' };
-    if (!formData.has('id')) return { error: 'No ask selected for answering.' };
-    if (!formData.has('response')) return { error: 'No response provided' };
-    if (!formData.has('question')) return { error: 'Question text missing' };
+    if (!agent) throw new Error('Not Authorized');
+    if (!formData.has('id')) throw new Error('No ask selected for answering.');
+    if (!formData.has('question')) throw new Error('Question text missing');
+    if (!formData.has('response')) throw new Error('No response provided');
 
     const question = formData.get('question')!.toString().trim();
     const response = formData.get('response')!.toString().trim();
@@ -59,15 +59,15 @@ export async function answerAsk(formData: FormData) {
 }
 
 export async function sendMessage(data: FormData) {
-    'use server';
-    if (typeof data.get("did") !== "string") return { error: "No DID provided!" };
-    if (typeof data.get("message") !== "string") return { error: "No message provided!" };
+    if (typeof data.get("did") !== "string") throw new Error('No DID provided');
+    if (typeof data.get("message") !== "string") throw new Error('No message provided');
+
     const message = (data.get("message") as string).trim();
     if (message.length < 1) return { error: "Your question is too short!" };
     if (message.length > 150) return { error: "Your question is too long!" };
 
     if (!await prisma.askUser.findUnique({ where: { did: data.get("did") as string }}))
-        return { error: "Invalid DID!" };
+        throw new Error('Invalid DID');
 
     await prisma.question.create({
         data: {

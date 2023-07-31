@@ -1,4 +1,10 @@
-export default function NotFound() {
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Not Found - BlueAsk."
+};
+
+export default function NotFoundAskUser() {
     return <>
         <div className="p-5 bg-gray-900 rounded flex flex-col gap-3">
             <h1 className="text-4xl">User Not Found</h1>

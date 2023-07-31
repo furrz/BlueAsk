@@ -6,5 +6,5 @@ export default function CookieSetter({ cookie}: { cookie: string }) {
         document.cookie = cookie;
         console.log("Set Cookie");
     }, [cookie]);
-    return <></>
+    return null
 }

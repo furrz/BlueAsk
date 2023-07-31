@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'BlueAsk',
+  title: 'BlueAsk - Anonymous Q&A for BlueSky.',
   description: 'Anonymous Q&A for BlueSky.',
 }
 
@@ -30,6 +30,9 @@ export default function RootLayout({
       <div className="flex justify-center">
           <main className="max-w-xl flex-1 flex flex-col gap-5">
               {children}
+              <p className="text-gray-400 mx-5 max-w-prose mb-5">
+                  Made by <a href="https://bsky.app/profile/zyntaks.ca" className="font-medium hover:underline underline-offset-8">@zyntaks.ca</a>. <a href="https://github.com/furrz/BlueAsk">Open Source.</a>
+              </p>
           </main>
       </div>
       <Analytics />

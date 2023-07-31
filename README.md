@@ -11,12 +11,11 @@ This is a Next.js-based project.
 
 ### First Time Setup
 
-In order to run the project locally, you need access to Vercel KV., you will want to make a [vercel](https://vercel.com) deployment: run `vercel` from the project directory, then go to the website and link a Vercel KV (redis) database under storage. Finally, run `vercel env pull` on the client. 
- - Sign up for [vercel](https://vercel.com) and install the CLI
- - Run `vercel` from the root of this project to deploy an instance.
- - Go to the vercel dashboard, select the project you just deployed, select "Storage", and attach/add a Vercel KV database.
- - Back on your CLI, run `vercel env pull` to put access keys for your database into the `.env` file.
- - You are now ready!
+In order to run the project locally, you will need a Postgres database. Set `POSTGRES_URL` in .env appropriately.
+
+Generate some random characters and set `JWT_SECRET` in .env appropriately, as a provisional JSON Web Tokens secret.
+
+Run `npx prisma migrate dev` to apply all database migrations to your local postgres.
 
 ### Running the Project
 

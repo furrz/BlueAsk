@@ -22,15 +22,15 @@ export async function deleteAsk(formData: FormData) {
 
 export async function answerAsk(formData: FormData) {
     const agent = await getAgent();
-    if (!agent) throw new Error('Not Authorized');
-    if (!formData.has('id')) throw new Error('No ask selected for answering.');
-    if (!formData.has('response')) throw new Error('No response provided');
-    if (!formData.has('question')) throw new Error('Question text missing');
+    if (!agent) return { error: 'Not Authorized' };
+    if (!formData.has('id')) return { error: 'No ask selected for answering.' };
+    if (!formData.has('response')) return { error: 'No response provided' };
+    if (!formData.has('question')) return { error: 'Question text missing' };
 
     const question = formData.get('question')!.toString().trim();
     const response = formData.get('response')!.toString().trim();
-    if (response.length < 1) throw new Error('Response is too short.');
-    if (question.length + response.length + 1 > 300) throw new Error('Response is too long.');
+    if (response.length < 1) return { error: 'Response is too short.' };
+    if (question.length + response.length + 1 > 300) return { error: 'Response is too long.' };
 
     await agent.com.atproto.repo.createRecord({
         collection: "app.bsky.feed.post",
@@ -56,4 +56,25 @@ export async function answerAsk(formData: FormData) {
             toDid: agent.session!.did
         }
     })
+}
+
+export async function sendMessage(data: FormData) {
+    'use server';
+    if (typeof data.get("did") !== "string") return { error: "No DID provided!" };
+    if (typeof data.get("message") !== "string") return { error: "No message provided!" };
+    const message = (data.get("message") as string).trim();
+    if (message.length < 1) return { error: "Your question is too short!" };
+    if (message.length > 150) return { error: "Your question is too long!" };
+
+    if (!await prisma.askUser.findUnique({ where: { did: data.get("did") as string }}))
+        return { error: "Invalid DID!" };
+
+    await prisma.question.create({
+        data: {
+            toDid: data.get("did") as string,
+            text: message
+        }
+    });
+
+    return { error: "GOOD:Your question has been sent!" }
 }

@@ -48,7 +48,8 @@ export default function AskList() {
 
         <FlashErrorBoundary noRounded>
             <form action={async (formData) => {
-                await answerAsk(formData);
+                const res = await answerAsk(formData);
+                if (res && res.error) throw new Error(res.error);
                 setQuestions(questions.filter(i => i.id !== ask.id))
             }} method="post" className="flex mx-5">
                 <input type="hidden" name="id" value={ask.id}/>

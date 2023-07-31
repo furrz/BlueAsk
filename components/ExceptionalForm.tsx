@@ -1,9 +1,11 @@
 'use client';
 
 import React from "react";
-import {sendMessage} from "@/app/actions";
 
-export default function ExceptionalForm({ children, className, action }: React.PropsWithChildren<{
+/** This is a special type of form that raises exceptions when its server action receives {error:string} objects.
+ *  This allows for the display of server-side error messages on client-side error boundaries.
+ *  Intended for use with FlashErrorBoundary. */
+export default function ExceptionalForm({children, className, action}: React.PropsWithChildren<{
     className?: string,
     action: (formData: FormData) => Promise<{ error: string } | any>
 }>) {

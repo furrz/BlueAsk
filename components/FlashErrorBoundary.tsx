@@ -2,6 +2,10 @@
 
 import React, {Component} from 'react';
 
+/** This specialized error boundary shows errors as "flash"-style message boxes
+ *  for form validation purposes. If a raised exception's message starts with GOOD:,
+ *  the box will be given a positive style to indicate success and GOOD: will be trimmed
+ *  from the displayed output. */
 class FlashErrorBoundary<Props extends {
     children: React.ReactNode,
     noRounded?: boolean

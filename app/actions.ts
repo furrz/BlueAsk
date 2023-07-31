@@ -2,10 +2,20 @@
 
 import {prisma} from "@/lib/prisma";
 import {getAgent, getVerifiedSession} from "@/lib/agent";
+import {Prisma} from ".prisma/client";
+import SortOrder = Prisma.SortOrder;
 
-export async function getAsks() {
+export async function getAsks(after?: number) {
     const session = await getVerifiedSession()
-    return prisma.question.findMany({ where: { toDid: session.did }})
+    return prisma.question.findMany({
+        where: {
+            toDid: session.did,
+            id: after !== undefined ? { gt: after } : undefined
+        },
+        orderBy: {
+            id: SortOrder.desc
+        }
+    })
 }
 
 export async function deleteAsk(formData: FormData) {
@@ -29,8 +39,8 @@ export async function answerAsk(formData: FormData) {
 
     const question = formData.get('question')!.toString().trim();
     const response = formData.get('response')!.toString().trim();
-    if (response.length < 1) return { error: 'Response is too short.' };
-    if (question.length + response.length + 1 > 300) return { error: 'Response is too long.' };
+    if (response.length < 1) return {error: 'Response is too short.'};
+    if (question.length + response.length + 1 > 300) return {error: 'Response is too long.'};
 
     await agent.com.atproto.repo.createRecord({
         collection: "app.bsky.feed.post",
@@ -63,10 +73,10 @@ export async function sendMessage(data: FormData) {
     if (typeof data.get("message") !== "string") throw new Error('No message provided');
 
     const message = (data.get("message") as string).trim();
-    if (message.length < 1) return { error: "Your question is too short!" };
-    if (message.length > 150) return { error: "Your question is too long!" };
+    if (message.length < 1) return {error: "Your question is too short!"};
+    if (message.length > 150) return {error: "Your question is too long!"};
 
-    if (!await prisma.askUser.findUnique({ where: { did: data.get("did") as string }}))
+    if (!await prisma.askUser.findUnique({where: {did: data.get("did") as string}}))
         throw new Error('Invalid DID');
 
     await prisma.question.create({
@@ -76,5 +86,5 @@ export async function sendMessage(data: FormData) {
         }
     });
 
-    return { error: "GOOD:Your question has been sent!" }
+    return {error: "GOOD:Your question has been sent!"}
 }

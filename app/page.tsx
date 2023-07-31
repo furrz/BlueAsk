@@ -16,7 +16,6 @@ export default async function MyAsks() {
     let session: AtpSessionData | null = null;
     try {
         session = await getVerifiedSession();
-        draftMode()
     } catch (e) {
         console.error(e);
         return <Landing/>;

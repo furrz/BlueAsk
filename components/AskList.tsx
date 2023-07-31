@@ -11,10 +11,12 @@ import {
 import {Question} from "@prisma/client";
 import {answerAsk, deleteAsk, getAsks} from "@/app/actions";
 import FlashErrorBoundary from "@/components/FlashErrorBoundary";
+import {Notification} from "rxjs";
 
 export default function AskList() {
     const [isPending, startTransition] = useTransition()
     const [questions, setQuestions] = useState<Question[]>([]);
+    const [counter, setCounter] = useState(0);
 
     useEffect(() => {
         startTransition(async () => {
@@ -22,6 +24,24 @@ export default function AskList() {
             setQuestions(asks);
         })
     }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            getAsks(questions.length > 0 ? questions[0].id : undefined)
+                .then(res => {
+                    if (res.length < 1) return;
+                    setQuestions([...res, ...questions])
+                    if ("Notification" in window) {
+                        if (window.Notification.permission === "granted") {
+                            new window.Notification('You have ' + res.length + ' new asks on BlueAsk!')
+                        } else if (window.Notification.permission !== "denied") {
+                            window.Notification.requestPermission().then(() => new window.Notification('You have ' + res.length + ' new asks on BlueAsk!'));
+                        }
+                    }
+                })
+            setCounter(counter + 1);
+        }, 30000);
+    }, [counter, questions]);
 
     if (isPending)
         return <p className="mx-5 text-gray-400">...Loading asks...</p>;

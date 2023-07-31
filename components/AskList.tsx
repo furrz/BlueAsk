@@ -41,7 +41,11 @@ export default function AskList() {
                 })
             setCounter(counter + 1);
         }, 30000);
-    }, [counter, questions]);
+
+        // We disable this check because we don't actually want to rerun
+        // this useEffect when anything other than counter changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counter]);
 
     if (isPending)
         return <p className="mx-5 text-gray-400">...Loading asks...</p>;

@@ -15,7 +15,7 @@ export async function updateProfile() {
 
     const profile = await agent.api.app.bsky.actor.getProfile({actor: agent.session!.did});
 
-    prisma.askUser.upsert({
+    await prisma.askUser.upsert({
         create: {
             did: agent.session!.did,
             handle: agent.session!.handle,
